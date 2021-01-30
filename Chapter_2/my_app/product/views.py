@@ -1,5 +1,5 @@
 from flask import render_template, request, Blueprint
-from my_app.hello.models import MESSAGES
+from my_app.product.models import MESSAGES
 
 hello = Blueprint('hello', __name__)
 
