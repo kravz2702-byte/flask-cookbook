@@ -1,10 +1,17 @@
+from werkzeug.exceptions import abort
 from flask import render_template, request, Blueprint
-from my_app.product.models import MESSAGES
+from my_app.product.models import PRODUCTS
 
-hello = Blueprint('hello', __name__)
+product_blueprint = Blueprint('product', __name__)
 
-@hello.route('/')
-@hello.route('/hello')
-def hello_world():
-    user = request.args.get('user', 'Iron man')
-    return render_template('index.html', user = user)
+@product_blueprint.route('/')
+@product_blueprint.route('/home')
+def home():
+    return render_template('home.html', products=PRODUCTS)
+
+@product_blueprint.route('/product/<key>')
+def product(key):
+    product = PRODUCTS.get(key)
+    if not product:
+        abort(404)
+    return render_template('product.html', product=product)
