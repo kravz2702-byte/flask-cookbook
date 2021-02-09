@@ -15,3 +15,9 @@ def product(key):
     if not product:
         abort(404)
     return render_template('product.html', product=product)
+
+@product_blueprint.context_processor
+def product_name_processor():
+    def full_name(product):
+        return '{0}/{1}'.format(product['category'], product['name'])
+    return {'full_name':full_name}        
