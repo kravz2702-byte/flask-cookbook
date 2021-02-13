@@ -21,3 +21,7 @@ def product_name_processor():
     def full_name(product):
         return '{0}/{1}'.format(product['category'], product['name'])
     return {'full_name':full_name}        
+
+@product_blueprint.route('/datetime')
+def datatiem():
+    return render_template('datetime_test.html')
