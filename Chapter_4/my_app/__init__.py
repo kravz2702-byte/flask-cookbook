@@ -11,3 +11,5 @@ db = SQLAlchemy(app)
 
 from my_app.catalog.views import catalog
 app.register_blueprint(catalog)
+
+db.create_all()
