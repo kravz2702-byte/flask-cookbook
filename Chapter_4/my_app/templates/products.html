@@ -5,7 +5,7 @@
         {% for product in products.items %}
             <div class="well">
                 <h2>
-                    <a href="{{ url_for('catalog.home', id=product.id) }}">{{ product.name }}</a>
+                    <a href="{{ url_for('catalog.product', id=product.id) }}">{{ product.name }}</a>
                     <small>%{{ product.price }}</small>
                 </h2>
             </div>
