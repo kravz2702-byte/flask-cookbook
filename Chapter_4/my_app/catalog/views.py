@@ -86,7 +86,6 @@ def create_category():
     db.session.commit()
     return render_template('category.html', category=category)
 
-
 @catalog.route('/category/<id>')
 def category(id):
     category = Category.query.get_or_404(id)
