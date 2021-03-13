@@ -1,6 +1,6 @@
 import os
 from functools import wraps
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 from flask import request, Blueprint, render_template, jsonify, flash, \
     redirect, url_for
 from my_app import db, app, ALLOWED_EXTENSIONS
@@ -39,7 +39,7 @@ def page_not_found(e):
 
 @catalog.route('/')
 @catalog.route('/home')
-@template_or_json('home.html')
+#@template_or_json('home.html')
 def home():
     products = Product.query.all()
     return {'count': len(products)}
