@@ -3,10 +3,10 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import os
-import 
-apt
+
+
 ALLOWED_EXTENSIONS = set(['set', 'jpg', 'gif', 'png', 'jpeg', 'pdf'])
-filepath = os.path.join(os.path.abspath(os.getcwd())'database.db')
+filepath = os.path.join(os.path.abspath(os.getcwd()),'database.db')
 
 
 app = Flask(__name__)
@@ -41,4 +41,4 @@ app.register_blueprint(google_blueprint)
 app.register_blueprint(twitter_blueprint)
 
 
-app.create_all()
+db.create_all()
