@@ -19,8 +19,8 @@ app.config['FACEBOOK_OAUTH_CLIENT_SECRET'] = 'random_keys_of_social_networks'
 app.config['GOOGLE_OAUTH_CLIENT_ID'] = 'random_keys_of_social_networks'
 app.config['GOOGLE_OAUTH_CLIENT_SECRET'] = 'random_keys_of_social_networks'
 app.config['OAUTHLIB_RELAX_TOKEN_SCOPE'] = True
-app.config['TWITTER_OAUTH_CLIENT_KEY'] = 'random_keys_of_social_networks'
-app.config['TWITTER_OAUTH_CLIEN_SECRET'] = 'random_keys_of_social_networks'
+app.config["TWITTER_OAUTH_CLIENT_KEY"] = "twitter app api key"
+app.config["TWITTER_OAUTH_CLIENT_SECRET"] = "twitter app secret key"
 app.config['LDAP_PROVIDER_URL'] = 'ldap://localhost'
 db = SQLAlchemy(app)
 
