@@ -37,8 +37,8 @@ class RegistrationForm(FlaskForm):
     username = TextField('Username', validators=[InputRequired()])
     password = PasswordField('Password', \
         validators=[InputRequired(), EqualTo('confirm', message="Passwords must match")])
-    confirm = PasswordField('Confirm Password', [InputRequired()])
+    confirm = PasswordField('Confirm Password', validators=[InputRequired()])
 
-class LoginRequired(FlaskForm):
+class LofinForm(FlaskForm):
     username = TextField('Username', validators=[InputRequired()])
     password = PasswordField('Password',validators=[InputRequired()])

@@ -21,6 +21,33 @@ google_blueprint = make_google_blueprint(
 )
 twitter_blueprint = make_twitter_blueprint(redirect_to='auth.twitter_login')
 
+@auth.route('/')
+@auth.route('/home')
+def home():
+    return render_template('home.html')
+
+@auth.route('/register', methods=['GET','POST'])
+def register():
+    if session.get('username'):
+        flash('You are already logged in', 'info')
+        return redirect(url_for('auth.home'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        username = request.form.get('username')
+        password = request.form.get('password')
+        existing_username = User.query.filter_by(username=username).first()
+        if existing_username:
+            flash('This username already taken. Try another one', 'warning')
+            return render_template('register.html')
+        user = User(username, password)
+        db.session.add(user)
+        db.session.commit()
+        flash('You are now registered. Please login.', 'success')
+        return redirect(url_for('auth.login'))
+    if form.errors:
+        flash(form.errors, 'danger')
+    return render_template('register.html', form=form)
+
 @auth.route('ldap-login', methods=['POST', 'GET'])
 def ldap_login():
     if current_user.is_authenticated:
