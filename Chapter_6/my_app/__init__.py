@@ -30,13 +30,15 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
 
-def get_ldap_connection():
-    conn = ldap.initialize(app.config['LDAP_PROVIDER_URL'])
-    return conn
 
-from myapp.auth.views import auth, flacebook_blueprint, google_blueprint, twitter_blueprint
-app.register_blueprint(auth)    
-app.register_blueprint(flacebook_blueprint)
+def get_ldap_connection():
+	conn = ldap.initialize(app.config['LDAP_PROVIDER_URL'])
+	return conn
+
+
+from my_app.auth.views import auth, facebook_blueprint, google_blueprint, twitter_blueprint
+app.register_blueprint(auth)
+app.register_blueprint(facebook_blueprint)
 app.register_blueprint(google_blueprint)
 app.register_blueprint(twitter_blueprint)
 
