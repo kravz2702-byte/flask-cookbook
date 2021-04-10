@@ -15,6 +15,6 @@ app.secret_key = 'some_secret_key'
 
 
 from myapp.catalog.views import catalog 
-app.register_blueprint(ccatalog)
+app.register_blueprint(catalog)
 
 db.create_all() 
