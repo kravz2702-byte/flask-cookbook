@@ -11,10 +11,10 @@ from my_app.catalog.models import Product, Category
 catalog = Blueprint('catalog', __name__)
 
 parser = reqparse.RequestParser()
-parser.app_argument('name', type=str)
-parser.app_argument('price', type=float)
-parser.app_argument('category', type=dict)
-
+parser.add_argument('name', type=str)
+parser.add_argument('price', type=float)
+parser.add_argument('category', type=dict)
+'''
 def template_or_json(template=None):
     """"Return a dict from your view and this will either
     pass it to a template or render json. Use like:
@@ -30,16 +30,16 @@ def template_or_json(template=None):
                 return render_template(template, **ctx)
         return decorated_fn
     return decorated
+'''
 
-
-@app.error_handler(404)
+@app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
 
 
 @catalog.route('/')
 @catalog.route('/home')
-@template_or_json('home.html')
+#@template_or_json('home.html')
 def home():
     products = Product.query.all()
     return {'count' : len(products)}
@@ -59,7 +59,7 @@ def products(page=1):
 
 @catalog.route('/product-create', methods=['GET', 'POST'])
 def create_product():
-    if request.method == 'POST'
+    if request.method == 'POST':
         name = request.form.get('name')
         price = request.form.get('price')
         categ_name = request.form.get('category')
@@ -161,7 +161,7 @@ class ProductApi(Resource):
         Product.query.filter_by(id=id).update({
             'name': name,
             'price': price,
-            'category_id': categoey.id,
+            'category_id': category.id,
         })
         db.session.commit()
         product = Product.query.get_or_404(id)
