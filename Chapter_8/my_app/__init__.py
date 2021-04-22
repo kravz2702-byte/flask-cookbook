@@ -7,7 +7,7 @@ import os
 filepath = os.path.join(os.path.abspath(os.getcwd(), "database.db"))
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite" filepath
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + filepath
 app.config["WTF_CSRF_SECRET_KEY"] = "random key for random key"
 db = SQLAlchemy(app)
 

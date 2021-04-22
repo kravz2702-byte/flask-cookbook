@@ -59,6 +59,10 @@ class AdminUserCreateForm(FlaskForm):
     password = PasswordField('Password', [InputRequired()])
     admin = BooleanField('Is Admin ?')
 
+class AdminUserUpdateForm(FlaskForm):
+    username = TextField('Username', [InputRequired()])
+    admin = BooleanField('Is Admin ?')
+
 class AdminUpdateForm(FlaskForm):
     username = TextField('Username', [InputRequired()])
     admin = BooleanField('Is Admin ?')
