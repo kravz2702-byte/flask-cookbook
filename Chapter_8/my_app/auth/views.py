@@ -63,3 +63,87 @@ def register():
         db.session.commit()
         flash('You are now registered. Please login.', 'success')
         return redirect(url_for('auth.login'))
+
+    if form.errors:
+        flash(form.errors, 'danger')
+
+    return render_template('register.html', form=form)
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        flash ('You are alreeady logged in', 'info')
+        return redirect(url_for('auth.home'))
+    
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        username = request.form.get('username')
+        password = request.form.get('password')
+        existing_user = User.query.filter_by(username=username).first()
+
+        if not (existing_user and existing_user.check_password(password)):
+            flash('Invalid username or password. Please try again', 'danger')
+            return render_template('login.html', form=form)
+
+        login_user(existing_user)
+        flash('You have successfully logged in', 'success')
+        return redirect(url_for('auth.home'))
+
+    if form.errors:
+        flash(form.errors, 'danger')
+
+    return render_template('login.html', form=form)
+
+
+@auth.route('/logout')
+@login_required(func)
+def logout():
+    logout_user()
+    return redirect(url_for('auth.home'))
+
+
+@auth.route('/admin')
+@login_required
+@admin_login_required
+def home_admin():
+    return render_template('admin-home.html')
+
+
+@auth.route('/admin/users-list')
+@login_required
+@admin_login_required
+def users_list_admin():
+    users = User.query.all()
+    return render_template('users-list-admin.html', users=users)
+
+
+@auth.route('/admin/create-user', methods=['GET', 'POST'])
+@login_required
+@admin_login_required
+def user_create_admin():
+    form = AdminUserCreateForm()
+
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        admin = form.admin.data
+        existing_username = User.query.filter_by(username=username).first()
+        if existing_username:
+            flash('This username has been already taken.\
+                    Try another one.', 'warning')
+
+            return render_template('register.html', form=form)
+        user = User(username, password, admin)
+        db.session.add(user)
+        db.session.commit()
+        flash('New User Created.', 'info')
+        return redirect(url_for('auth.users_list_admin'))
+
+    if form.errors:
+        flsh(form.errors, 'danger')
+
+    return render_template('user-create-admin.html', form=form)
+
+
