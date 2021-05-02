@@ -142,8 +142,75 @@ def user_create_admin():
         return redirect(url_for('auth.users_list_admin'))
 
     if form.errors:
-        flsh(form.errors, 'danger')
+        flash(form.errors, 'danger')
 
     return render_template('user-create-admin.html', form=form)
 
 
+@auth.route('/admin/update-user/<id>', methods=['GET', 'POST'])
+@login_required
+@admin_login_required
+def user_update_admin(id):
+    user = User.query.get(id)
+    form = AdminUserUpdateFrom(
+        username=user.username,
+        admin = user.admin
+    )
+
+    if form.validate_on_submit():
+        username = form.username.data
+        admin = form.admin.data 
+
+        User.query.filter_by(id=id).update({
+            'username': username,
+            'admin': admin,
+        })
+
+        db.session.commit()
+        flash('User Updated.', 'info')
+        return redirect(url_for('auth.users_list_admin'))
+
+    if form.errors:
+        flash(form.errors, 'danger')
+
+    return render_template('user-update-admin.html', form=form, user=user)
+
+
+@auth.route('/admin.delete-user/<id>')
+@login_required
+@admin_login_required
+def user_delete_admin(id):
+    user = User.query.get(id)
+    db.session.delete(user)
+    db.session.commit()
+    flash('User Deleted', 'info')
+    return redirect(url_for('auth.users_list_admin'))
+
+
+class MyAdminIndexView(AdminIndexView):
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.is_admin()
+
+
+class UserAdminView(ModelView, ActionsMixin):
+    column_searchable_list = ('username',)
+    column_sortable_list = ('username', 'admin')
+    column_exclude_list = ('pwdhash',)
+    form_excluded_columns = ('pwdhash',)
+    form_edit_rules = (
+        'username', 'admin', 'roles', 'notes',
+        rules.Header('Reset Password'),
+        'new_password', 'confirm'
+    )
+    form_create_rules = (
+        'username', 'admin', 'roles', 'notes', 'password'
+    )
+    form_overrides = dict(notes=CKTextAreaField)
+
+    create_template = 'edit.html'
+    edit_template = 'edit.html'
+
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.is_admin()
+
+    
